@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+    <metadata>
+        <id>AFS.WebServices.Client</id>
+        <version>1.0.1</version>
+        <authors>Advanced Fraud Solutions</authors>
+        <owners>Advanced Fraud Solutions</owners>
+        <projectUrl>https://api.advancedfraudsolutions.com</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Client library for interacting with AFS web services.</description>
+        <copyright>Copyright 2014</copyright>
+        <language />
+        <dependencies>
+            <group targetFramework=".NETFramework4.0">
+                <dependency id="Microsoft.Bcl.Async" version="1.0.165" />
+                <dependency id="Microsoft.AspNet.WebApi.Client" version="4.0.30506.0" />
+            </group>
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="Microsoft.AspNet.WebApi.Client" version="5.1.1" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="AFS.WebServices.Client.4.0\bin\Release\AFS.WebServices.Client.dll" target="lib\net40\AFS.WebServices.Client.dll" />
+        <file src="AFS.WebServices.Client\bin\Release\AFS.WebServices.Client.dll" target="lib\net45\AFS.WebServices.Client.dll" />
+    </files>
+</package>

@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{493F3C94-02DF-42D8-B8DD-692744B1D838}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AFS.WebServices.Client</RootNamespace>
+    <AssemblyName>AFS.WebServices.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET40</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.165\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.165\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.165\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.6\lib\net40\System.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.6\lib\net40\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.6\lib\net40\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AFS.WebServices.Client\AFSClient.cs">
+      <Link>AFSClient.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\BadRequestException.cs">
+      <Link>BadRequestException.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\Extensions.cs">
+      <Link>Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\BadRequestResponse.cs">
+      <Link>TrueChecks\BadRequestResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\Constants.cs">
+      <Link>TrueChecks\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\FieldMode.cs">
+      <Link>TrueChecks\FieldMode.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\QueryAction.cs">
+      <Link>TrueChecks\QueryAction.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\TrueChecksAction.cs">
+      <Link>TrueChecks\TrueChecksAction.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\TrueChecksClientSettingsResponse.cs">
+      <Link>TrueChecks\TrueChecksClientSettingsResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\TrueChecksSearch.cs">
+      <Link>TrueChecks\TrueChecksSearch.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\TrueChecksSearchResponse.cs">
+      <Link>TrueChecks\TrueChecksSearchResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\UrlFragments.cs">
+      <Link>TrueChecks\UrlFragments.cs</Link>
+    </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TrueChecks\Urls.cs">
+      <Link>TrueChecks\Urls.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
