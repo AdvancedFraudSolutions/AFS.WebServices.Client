@@ -148,6 +148,10 @@ namespace AFS.WebServices.Client.Example
                 Maker = "Maker: ".Prompt(),
             };
 
+            // optionally, you could control what search takes place based on amount thresholds
+            query.DoTrueChecksSearch = query.CheckAmount >= 10;
+            query.DoDepositChekSearch = query.CheckAmount >= 25;
+
             // get the depositor information when the customer allows/requires it
             if (settings.DepositorSearchEnabled)
             {

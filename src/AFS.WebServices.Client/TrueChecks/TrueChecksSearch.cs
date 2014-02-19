@@ -8,6 +8,8 @@
         public TrueChecksSearch()
         {
             IsBusinessOrPersonalCheck = true;
+            DoTrueChecksSearch = true;
+            DoDepositChekSearch = true;
         }
 
         /// <summary>
@@ -84,6 +86,17 @@
         /// If this query is a refinement of a previous query, the previous query's ID should be supplied here.
         /// </summary>
         public int? RefinedQueryId { get; set; }
+
+        /// <summary>
+        /// Whether the TrueChecks service should be used for this request. The default is true.
+        /// </summary>
+        public bool DoTrueChecksSearch { get; set; }
+
+        /// <summary>
+        /// Whether the DepositChek service should be used for this request. The default is true.
+        /// </summary>
+        public bool DoDepositChekSearch { get; set; }
+
 
     }
 }
