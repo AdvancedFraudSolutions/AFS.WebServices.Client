@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AFS.WebServices.Client.TrueChecks
+﻿namespace AFS.WebServices.Client.TrueChecks
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// The response body of a TrueChecks search.
     /// </summary>
@@ -145,19 +145,24 @@ namespace AFS.WebServices.Client.TrueChecks
             /// Recommended action based on the ews response primary status code.
             /// </summary>
             public string RecommendedAction { get; set; }
+            public string PrimaryStatusCode { get; set; }
             public string PrimaryStatusTitle { get; set; }
             public string PrimaryStatusShortTitle { get; set; }
             public string PrimaryStatusDescription { get; set; }
             public string PrimaryStatusHitType { get; set; }
+            public string SecondaryStatusCode { get; set; }
             public string SecondaryStatusTitle { get; set; }
             public string SecondaryStatusDescription { get; set; }
             public string SecondaryStatusHitType { get; set; }
+            public string AdditionalStatusCode { get; set; }
             public string AdditionalStatusTitle { get; set; }
             public string AdditionalStatusDescription { get; set; }
             public string AdditionalStatusHitType { get; set; }
+            public string LastReturnReasonCode { get; set; }
             public string LastReturnReasonTitle { get; set; }
             public string LastReturnReasonDescription { get; set; }
             public string LastReturnReasonHitType { get; set; }
+            public string PreviousStatusCode { get; set; }
             public string PreviousStatusTitle { get; set; }
             public string PreviousStatusDescription { get; set; }
             public string PreviousStatusHitType { get; set; }

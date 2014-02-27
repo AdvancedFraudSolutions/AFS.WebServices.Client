@@ -231,23 +231,28 @@ namespace AFS.WebServices.Client.Example
                 var r = results.DepositChekResults;
                 PrintIndented("RecommendedAction: {0}", r.RecommendedAction);
 
+                PrintIndented("PrimaryStatusCode: {0}", r.PrimaryStatusCode);
                 PrintIndented("PrimaryStatusDescription: {0}", r.PrimaryStatusDescription);
                 PrintIndented("PrimaryStatusHitType: {0}", r.PrimaryStatusHitType);
                 PrintIndented("PrimaryStatusShortTitle: {0}", r.PrimaryStatusShortTitle);
                 PrintIndented("PrimaryStatusTitle: {0}", r.PrimaryStatusTitle);
 
+                PrintIndented("SecondaryStatusCode: {0}", r.SecondaryStatusCode);
                 PrintIndented("SecondaryStatusDescription: {0}", r.SecondaryStatusDescription);
                 PrintIndented("SecondaryStatusHitType: {0}", r.SecondaryStatusHitType);
                 PrintIndented("SecondaryStatusTitle: {0}", r.SecondaryStatusTitle);
 
+                PrintIndented("AdditionalStatusCode: {0}", r.AdditionalStatusCode);
                 PrintIndented("AdditionalStatusDescription: {0}", r.AdditionalStatusDescription);
                 PrintIndented("AdditionalStatusHitType: {0}", r.AdditionalStatusHitType);
                 PrintIndented("AdditionalStatusTitle: {0}", r.AdditionalStatusTitle);
 
+                PrintIndented("PreviousStatusCode: {0}", r.PreviousStatusCode);
                 PrintIndented("PreviousStatusDescription: {0}", r.PreviousStatusDescription);
                 PrintIndented("PreviousStatusHitType: {0}", r.PreviousStatusHitType);
                 PrintIndented("PreviousStatusTitle: {0}", r.PreviousStatusTitle);
 
+                PrintIndented("LastReturnReasonCode: {0}", r.LastReturnReasonCode);
                 PrintIndented("LastReturnReasonDescription: {0}", r.LastReturnReasonDescription);
                 PrintIndented("LastReturnReasonHitType: {0}", r.LastReturnReasonHitType);
                 PrintIndented("LastReturnReasonTitle: {0}", r.LastReturnReasonTitle);
