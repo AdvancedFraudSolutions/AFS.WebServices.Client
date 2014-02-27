@@ -148,7 +148,7 @@ namespace AFS.WebServices.Client.Example
                 Maker = "Maker: ".Prompt(),
             };
 
-            // optionally, you could control what search takes place based on amount thresholds
+            // optionally, you could control what search takes place based on some criteria
             query.DoTrueChecksSearch = query.CheckAmount >= 10;
             query.DoDepositChekSearch = query.CheckAmount >= 25;
 
@@ -226,7 +226,7 @@ namespace AFS.WebServices.Client.Example
             {
                 PrintIndented("EWS DepositChek service is down.");
             }
-            else
+            else if(results.DepositChekResults != null)
             {
                 var r = results.DepositChekResults;
                 PrintIndented("RecommendedAction: {0}", r.RecommendedAction);
