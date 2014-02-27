@@ -2,12 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>AFS.WebServices.Client</id>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <authors>Advanced Fraud Solutions</authors>
         <owners>Advanced Fraud Solutions</owners>
         <projectUrl>https://api.advancedfraudsolutions.com</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Client library for interacting with AFS web services.</description>
+        <releaseNotes />
         <copyright>Copyright 2014</copyright>
         <language />
         <dependencies>
