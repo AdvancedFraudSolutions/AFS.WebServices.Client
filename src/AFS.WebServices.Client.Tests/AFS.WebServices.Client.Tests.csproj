@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DC6BC4A1-AD00-4563-916E-5136F8259AC9}</ProjectGuid>
+    <ProjectGuid>{7132CA8A-ADF3-4308-A27F-B53A7993363C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AFS.WebServices.Client</RootNamespace>
-    <AssemblyName>AFS.WebServices.Client</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>AFS.WebServices.Client.Tests</RootNamespace>
+    <AssemblyName>AFS.WebServices.Client.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -31,34 +31,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BadRequestException.cs" />
-    <Compile Include="AFSClient.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="HttpClient.cs" />
-    <Compile Include="IDeserializeFromResponseStream.cs" />
-    <Compile Include="ISerializeToRequestStream.cs" />
+    <Compile Include="Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResponseXmlParser.cs" />
-    <Compile Include="TrueChecks\BadRequestResponse.cs" />
-    <Compile Include="TrueChecks\Urls.cs" />
-    <Compile Include="TrueChecks\Constants.cs" />
-    <Compile Include="TrueChecks\FieldMode.cs" />
-    <Compile Include="TrueChecks\QueryAction.cs" />
-    <Compile Include="TrueChecks\TrueChecksAction.cs" />
-    <Compile Include="TrueChecks\TrueChecksClientSettingsResponse.cs" />
-    <Compile Include="TrueChecks\TrueChecksSearch.cs" />
-    <Compile Include="TrueChecks\TrueChecksSearchResponse.cs" />
-    <Compile Include="TrueChecks\UrlFragments.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AFS.WebServices.Client\AFS.WebServices.Client.csproj">
+      <Project>{DC6BC4A1-AD00-4563-916E-5136F8259AC9}</Project>
+      <Name>AFS.WebServices.Client</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

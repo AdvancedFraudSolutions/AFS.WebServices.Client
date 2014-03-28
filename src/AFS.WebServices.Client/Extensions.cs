@@ -1,29 +1,39 @@
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using AFS.WebServices.Client.TrueChecks;
+using System;
 
 namespace AFS.WebServices.Client
 {
     public static class Extensions
     {
-        public static async Task HandleBadRequest(this HttpResponseMessage message, CancellationToken cancellationToken)
+        public static T Parse<T>(this string s, Func<string, T> parser)
         {
-            if (message.IsSuccessStatusCode)
-                return;
+            return parser(s);
+        }
 
-            if (message.StatusCode == HttpStatusCode.BadRequest)
-            {
-#if NET40
-                var errors = await message.Content.ReadAsAsync<BadRequestResponse>();
-#else
-                var errors = await message.Content.ReadAsAsync<BadRequestResponse>(cancellationToken);
-#endif
-                throw new BadRequestException(errors);
-            }
+        internal static void EnsureContentType(this ISerializeToRequestStream i, string contentType, string requiredContentType)
+        {
+            if (!contentType.Equals(requiredContentType, StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentOutOfRangeException("contentType",
+                    string.Format("contentType must be {0}", requiredContentType));
+        }
 
-            message.EnsureSuccessStatusCode();
+
+        internal static void EnsureContentTypeStartsWith(this ISerializeToRequestStream i, string contentType, string requiredContentTypePrefix)
+        {
+            if (!contentType.StartsWith(requiredContentTypePrefix, StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentOutOfRangeException("contentType",
+                    string.Format("contentType must be {0}", requiredContentTypePrefix));
+        }
+
+        internal static void EnsureContentType(this IDeserializeFromResponseStream i, string contentType, string requiredContentType)
+        {
+            EnsureContentType(null as ISerializeToRequestStream, contentType, requiredContentType);
+        }
+
+
+        internal static void EnsureContentTypeStartsWith(this IDeserializeFromResponseStream i, string contentType, string requiredContentTypePrefix)
+        {
+            EnsureContentTypeStartsWith(null as ISerializeToRequestStream, contentType, requiredContentTypePrefix);
+
         }
     }
 }

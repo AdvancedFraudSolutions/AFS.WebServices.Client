@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 using System.Drawing;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading;
-using System.Threading.Tasks;
 using AFS.WebServices.Client.TrueChecks;
 
 namespace AFS.WebServices.Client
@@ -12,25 +9,18 @@ namespace AFS.WebServices.Client
     /// <summary>
     /// Provides methods for interacting with the Advanced Fraud Solutions web service.
     /// </summary>
-    public class AFSClient : IDisposable
+    public class AFSClient
     {
-        private readonly HttpClient _client;
-        public CancellationToken CancellationToken { get; set; }
+        private readonly HttpClient _httpClient;
 
-        public AFSClient(HttpClient httpClient)
-        {
-            if (httpClient == null) throw new ArgumentNullException("httpClient");
-            _client = httpClient;
-        }
 
-        /// <param name="baseAddress">The base URL of the web service.</param>
+        /// <param name="baseAddress">The base URL of the web service. If null the default base address will be used.</param>
         /// <param name="apiKey">Your API key that is used to identify the integrator and customer.</param>
-        public AFSClient(string apiKey, string baseAddress = Urls.DefaultBaseAddress)
+        public AFSClient(string apiKey, string baseAddress)
         {
-            if (baseAddress == null) throw new ArgumentNullException("baseAddress");
             if (apiKey == null) throw new ArgumentNullException("apiKey");
 
-            _client = CreateHttpClient(baseAddress, apiKey);
+            _httpClient = CreateHttpClient(baseAddress ?? Urls.DefaultBaseAddress, apiKey);
         }
 
         /// <param name="connectionString">A connection string containing the information needed to connect to the AFS web services.</param>
@@ -47,7 +37,17 @@ namespace AFS.WebServices.Client
             if (!csb.TryGetValue("url", out baseAddress))
                 baseAddress = Urls.DefaultBaseAddress;
 
-            _client = CreateHttpClient((string)baseAddress, (string)apiKey);
+            _httpClient = CreateHttpClient((string)baseAddress, (string)apiKey);
+        }
+
+        private static HttpClient CreateHttpClient(string baseAddress, string apiKey)
+        {
+            return new HttpClient(baseAddress)
+            {
+                AuthorizationHeader = string.Format("{0} {1}", Constants.XApiKey, apiKey),
+                RequestContentType = "application/x-www-form-urlencoded",
+                RequestAccept = "application/xml"
+            };
         }
 
         private static void BadConnectionString(Exception innerException = null)
@@ -58,69 +58,34 @@ namespace AFS.WebServices.Client
                     Urls.DefaultBaseAddress), innerException);
         }
 
-        private static HttpClient CreateHttpClient(string baseAddress, string apiKey)
-        {
-            var client = new HttpClient { BaseAddress = new Uri(baseAddress) };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Constants.XApiKey, apiKey);
-            return client;
-        }
-
-        /// <summary>
-        /// Search 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        public async Task<TrueChecksSearchResponse> TrueChecksSearchAsync(TrueChecksSearch query)
+        public TrueChecksSearchResponse TrueChecksSearch(TrueChecksSearch query)
         {
             if (query == null) throw new ArgumentNullException("query");
-
-            using (var response = await _client.PostAsJsonAsync(Urls.TrueChecksSearch, query, CancellationToken))
-            {
-                await response.HandleBadRequest(CancellationToken);
-
-#if NET40
-                var results = await response.Content.ReadAsAsync<TrueChecksSearchResponse>();
-#else
-                var results = await response.Content.ReadAsAsync<TrueChecksSearchResponse>(CancellationToken);
-#endif
-                return results;
-            }
+            var result = _httpClient.Post<TrueChecksSearchResponse>(Urls.TrueChecksSearch, query);
+            return result;
         }
 
-        public async Task<TrueChecksClientSettingsResponse> GetClientTrueChecksSettingsAsync()
+        public TrueChecksClientSettingsResponse GetClientTrueChecksSettings()
         {
-            using (var response = await _client.GetAsync(Urls.TrueChecksClientSettings, CancellationToken))
-            {
-                await response.HandleBadRequest(CancellationToken);
-#if NET40
-                var results = await response.Content.ReadAsAsync<TrueChecksClientSettingsResponse>();
-#else
-                var results = await response.Content.ReadAsAsync<TrueChecksClientSettingsResponse>(CancellationToken);
-#endif
-                return results;
-            }
+            return _httpClient.Get<TrueChecksClientSettingsResponse>(Urls.TrueChecksClientSettings);
         }
 
-        public async Task PostTrueChecksQueryAction(TrueChecksAction action)
+        public void PostTrueChecksQueryAction(TrueChecksAction action)
         {
-            using (var response = await _client.PostAsJsonAsync(Urls.TrueChecksCheckAction, action, CancellationToken))
-                await response.HandleBadRequest(CancellationToken);
+            _httpClient.Post(Urls.TrueChecksCheckAction, action);
         }
 
-        public async Task<Image> GetTrueChecksImage(string imagePath)
+        public Image GetTrueChecksImage(string imagePath)
         {
             var url = Urls.TrueChecksImages(imagePath);
-            using (var response = await _client.GetAsync(url, CancellationToken))
-            {
-                await response.HandleBadRequest(CancellationToken);
-                using (var stream = await response.Content.ReadAsStreamAsync())
-                    return Image.FromStream(stream);
-            }
-        }
 
-        public void Dispose()
-        {
-            _client.Dispose();
+            var image = _httpClient.Get(url, resp =>
+            {
+                using (var stream = resp.GetResponseStream())
+                    return Image.FromStream(stream);
+            });
+
+            return image;
         }
     }
 }

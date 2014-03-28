@@ -1,4 +1,8 @@
-﻿namespace AFS.WebServices.Client.TrueChecks
+﻿using System.IO;
+using System.Xml.Linq;
+using System.Linq;
+
+namespace AFS.WebServices.Client.TrueChecks
 {
     using System;
     using System.Collections.Generic;
@@ -6,7 +10,7 @@
     /// <summary>
     /// The response body of a TrueChecks search.
     /// </summary>
-    public class TrueChecksSearchResponse
+    public class TrueChecksSearchResponse : IDeserializeFromResponseStream
     {
         /// <summary>
         /// Whether the customer is licensed to use the TrueChecks service or not.
@@ -226,6 +230,103 @@
             /// A collection the types of activity perpetrated by the depositor and the number of occurrences on record.
             /// </summary>
             public Dictionary<string, int> ActivitySummary { get; set; }
+        }
+
+        public void DeserializeFromResponseStream(Stream stream, string contentType)
+        {
+            this.EnsureContentTypeStartsWith(contentType, "application/xml");
+
+            // reference: https://api.advancedfraudsolutions.com/Api/POST-TrueChecks-Search
+
+            var ns = XNamespace.Get("http://schemas.datacontract.org/2004/07/AFS.WebAPI.Models.TrueChecks");
+            XElement xml;
+            using (var reader = new StreamReader(stream))
+                xml = XElement.Load(reader);
+
+            // ReSharper disable PossibleNullReferenceException
+
+            QueryId = xml.Element(ns + "QueryId").Value.Parse(Convert.ToInt32);
+            HasDepositChekLicense = xml.Element(ns + "HasDepositChekLicense").Value.Parse(Convert.ToBoolean);
+            HasTrueChecksLicense = xml.Element(ns + "HasTrueChecksLicense").Value.Parse(Convert.ToBoolean);
+            IsEWSDepositChekServiceDown =
+                xml.Element(ns + "IsEWSDepositChekServiceDown").Value.Parse(Convert.ToBoolean);
+            OverallRecommendedAction = xml.Element(ns + "OverallRecommendedAction").Value;
+
+
+            CheckAlertResults = xml.Element(ns + "CheckAlertResults")
+                .Elements(ns + "TrueChecksSearchResponse.CheckAlertResult")
+                .Select(el => new CheckAlertResult
+                {
+                    AccountNumber = el.Element(ns + "AccountNumber").Value,
+                    Amount = el.Element(ns + "Amount").Value.Parse(Convert.ToDecimal),
+                    CheckNumber = el.Element(ns + "CheckNumber").Value,
+                    CheckType = el.Element(ns + "CheckType").Value,
+                    CreatedDate = ResponseXmlParser.ParseDateTimeOffset(el.Element(ns + "CreatedDate")),
+                    FraudType = el.Element(ns + "FraudType").Value,
+                    FraudTypeId = el.Element(ns + "FraudTypeId").Value.Parse(Convert.ToInt32),
+                    FrontImage = el.Element(ns + "FrontImage").Value,
+                    MakerAddress = el.Element(ns + "MakerAddress").Value,
+                    MakerName = el.Element(ns + "MakerName").Value,
+                    Notes = el.Element(ns + "Notes").Value,
+                    RecommendedAction = el.Element(ns + "RecommendedAction").Value,
+                    RecommendedActionWeight =
+                        el.Element(ns + "RecommendedActionWeight").Value.Parse(Convert.ToInt32),
+                    RoutingNumber = el.Element(ns + "RoutingNumber").Value,
+                    UpdatedDate = ResponseXmlParser.ParseDateTimeOffset(el.Element(ns + "UpdatedDate")),
+                }).ToArray();
+
+
+            PersonResults = xml.Element(ns + "PersonResults")
+                .Elements(ns + "TrueChecksSearchResponse.PersonResult")
+                .Select(el => new PersonResult
+                {
+                    ActivitySummary = ResponseXmlParser.ParseManyKeyValueOfStringInts(el.Element(ns + "ActivitySummary ")).ToDictionary(x => x.Key, x => x.Value),
+                    DriversLicense = el.Element(ns + "DriversLicense ").Value,
+                    DriversLicenseState = el.Element(ns + "DriversLicenseState ").Value,
+                    FIID = el.Element(ns + "FIID ").Value,
+                    FirstName = el.Element(ns + "FirstName ").Value,
+                    Image = el.Element(ns + "Image ").Value,
+                    LastName = el.Element(ns + "LastName ").Value,
+                    NameMatchOnly = el.Element(ns + "NameMatchOnly").Value.Parse(Convert.ToBoolean),
+                    PersonId = el.Element(ns + "PersonId").Value.Parse(Convert.ToInt32),
+                    PersonUpdated = ResponseXmlParser.ParseDateTimeOffset(el.Element(ns + "PersonUpdated")),
+                    SSN = el.Element(ns + "SSN").Value,
+
+                }).ToArray();
+
+            {
+                var el = xml.Element(ns + "DepositChekResults");
+                if (!el.IsEmpty)
+                    DepositChekResults = new DepositChekResult
+                    {
+                        AdditionalStatusCode = el.Element(ns + "AdditionalStatusCode").Value,
+                        AdditionalStatusDescription = el.Element(ns + "AdditionalStatusDescription").Value,
+                        AdditionalStatusHitType = el.Element(ns + "AdditionalStatusHitType").Value,
+                        AdditionalStatusTitle = el.Element(ns + "AdditionalStatusTitle").Value,
+                        ErrorDescription = el.Element(ns + "ErrorDescription").Value,
+                        ErrorTitle = el.Element(ns + "ErrorTitle").Value,
+                        LastReturnReasonCode = el.Element(ns + "LastReturnReasonCode").Value,
+                        LastReturnReasonDescription = el.Element(ns + "LastReturnReasonDescription").Value,
+                        LastReturnReasonHitType = el.Element(ns + "LastReturnReasonHitType").Value,
+                        LastReturnReasonTitle = el.Element(ns + "LastReturnReasonTitle").Value,
+                        PreviousStatusCode = el.Element(ns + "PreviousStatusCode").Value,
+                        PreviousStatusDescription = el.Element(ns + "PreviousStatusDescription").Value,
+                        PreviousStatusHitType = el.Element(ns + "PreviousStatusHitType").Value,
+                        PreviousStatusTitle = el.Element(ns + "PreviousStatusTitle").Value,
+                        PrimaryStatusCode = el.Element(ns + "PrimaryStatusCode").Value,
+                        PrimaryStatusDescription = el.Element(ns + "PrimaryStatusDescription").Value,
+                        PrimaryStatusHitType = el.Element(ns + "PrimaryStatusHitType").Value,
+                        PrimaryStatusShortTitle = el.Element(ns + "PrimaryStatusShortTitle").Value,
+                        PrimaryStatusTitle = el.Element(ns + "PrimaryStatusTitle").Value,
+                        RecommendedAction = el.Element(ns + "RecommendedAction").Value,
+                        SecondaryStatusCode = el.Element(ns + "SecondaryStatusCode").Value,
+                        SecondaryStatusDescription = el.Element(ns + "SecondaryStatusDescription").Value,
+                        SecondaryStatusHitType = el.Element(ns + "SecondaryStatusHitType").Value,
+                        SecondaryStatusTitle = el.Element(ns + "SecondaryStatusTitle").Value,
+                    };
+            }
+
+            // ReSharper restore PossibleNullReferenceException
         }
     }
 }

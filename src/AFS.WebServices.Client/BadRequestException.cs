@@ -13,18 +13,18 @@ namespace AFS.WebServices.Client
         /// <summary>
         /// The validation errors that caused the bad request response.
         /// </summary>
-        public Dictionary<string, string[]> Errors { get; private set; }
+        public Dictionary<string, string> Errors { get; private set; }
 
         public BadRequestException(BadRequestResponse response, Exception inner)
             : base(response.Message, inner)
         {
-            Errors = response.ModelState;
+            Errors = response.Errors;
         }
 
         public BadRequestException(BadRequestResponse response)
             : base(response.Message)
         {
-            Errors = response.ModelState;
+            Errors = response.Errors;
         }
     }
 }

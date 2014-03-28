@@ -21,59 +21,57 @@ namespace AFS.WebServices.Client.Example
             // you can create the client with a connection string or with the url/api key
             // the connection string should look like:
             //      Url = https://api.advancedfraudsolutions.com; ApiKey = yourClientApiKeyGoesHere
-            using (var client = new AFSClient(connectionString))
+            var client = new AFSClient(connectionString);
+            int? refinedQueryId = null;
+            do
             {
-                int? refinedQueryId = null;
-                do
+                try
                 {
-                    try
-                    {
-                        // before displaying the search interface to the end-user
-                        // you'll want to get the settings that control depositor searching
-                        var settings = client.GetClientTrueChecksSettingsAsync().GetResult();
-                        Print(settings);
+                    // before displaying the search interface to the end-user
+                    // you'll want to get the settings that control depositor searching
+                    var settings = client.GetClientTrueChecksSettings();
+                    Print(settings);
 
-                        // get the user's TrueChecks query
-                        var trueChecksQuery = GetSearchQuery(settings, refinedQueryId);
+                    // get the user's TrueChecks query
+                    var trueChecksQuery = GetSearchQuery(settings, refinedQueryId);
 
-                        // get the results for the query
-                        var searchResults = client.TrueChecksSearchAsync(trueChecksQuery).GetResult();
-                        Print(searchResults);
+                    // get the results for the query
+                    var searchResults = client.TrueChecksSearch(trueChecksQuery);
+                    Print(searchResults);
 
-                        // the search result will have zero to many image references
-                        // you can download the images to display to the user
-                        // in this example, we'll just save any images to a folder
-                        SaveImages(client, searchResults);
+                    // the search result will have zero to many image references
+                    // you can download the images to display to the user
+                    // in this example, we'll just save any images to a folder
+                    SaveImages(client, searchResults);
 
-                        // finally, the end user will inform the TrueChecks service
-                        // of what action they have decided to take with the check
-                        var action = GetCheckAction(searchResults);
-                        client.PostTrueChecksQueryAction(action).WaitNicely();
+                    // finally, the end user will inform the TrueChecks service
+                    // of what action they have decided to take with the check
+                    var action = GetCheckAction(searchResults);
+                    client.PostTrueChecksQueryAction(action);
 
-                        // if the end-user is refining their search, you should 
-                        // include the original query id in the next search
-                        refinedQueryId = action.Action == QueryAction.RefinedSearch
-                            ? searchResults.QueryId
-                            : (int?)null;
-                    }
-                    catch (BadRequestException ex)
-                    {
-                        // an invalid service request causes a BadRequestException
-                        // to be thrown (the http response code is 400 BadRequest)
-                        // check ex.Errors to see what you (or the user) did wrong
-                        Print(ex);
-                    }
-                    catch (HttpRequestException ex)
-                    {
-                        // an HttpRequestException is thrown for all other 
-                        // non successful responses (401 Unauthorized, 403 Forbidden,
-                        // 404 NotFound, 500 InternalServerError, etc.)
-                        // these represent error conditions that are unrelated to
-                        // end-user input
-                        Print(ex);
-                    }
-                } while ("Would you like to continue [y/n]? ".Prompt(Parse.Bool));
-            }
+                    // if the end-user is refining their search, you should 
+                    // include the original query id in the next search
+                    refinedQueryId = action.Action == QueryAction.RefinedSearch
+                        ? searchResults.QueryId
+                        : (int?) null;
+                }
+                catch (BadRequestException ex)
+                {
+                    // an invalid service request causes a BadRequestException
+                    // to be thrown (the http response code is 400 BadRequest)
+                    // check ex.Errors to see what you (or the user) did wrong
+                    Print(ex);
+                }
+                catch (HttpRequestException ex)
+                {
+                    // an HttpRequestException is thrown for all other 
+                    // non successful responses (401 Unauthorized, 403 Forbidden,
+                    // 404 NotFound, 500 InternalServerError, etc.)
+                    // these represent error conditions that are unrelated to
+                    // end-user input
+                    Print(ex);
+                }
+            } while ("Would you like to continue [y/n]? ".Prompt(Parse.Bool));
 
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
@@ -115,7 +113,7 @@ namespace AFS.WebServices.Client.Example
             // download image and save to disk
             foreach (var imgPath in imgPaths)
             {
-                using (var img = client.GetTrueChecksImage(imgPath).GetResult())
+                using (var img = client.GetTrueChecksImage(imgPath))
                 {
                     var file = new FileInfo(Path.Combine(imgDir.FullName, imgPath));
                     if (file.Exists) file.Delete();
@@ -289,9 +287,7 @@ namespace AFS.WebServices.Client.Example
 
                 // these are the problems
                 Indent++;
-                foreach (var message in error.Value)
-                    PrintIndented(message);
-
+                PrintIndented(error.Value);
                 Indent--;
             }
         }

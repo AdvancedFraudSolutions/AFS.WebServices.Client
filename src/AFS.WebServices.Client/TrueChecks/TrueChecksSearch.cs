@@ -1,9 +1,17 @@
-﻿namespace AFS.WebServices.Client.TrueChecks
+﻿using System;
+using System.Collections.Specialized;
+using System.Globalization;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Web;
+using System.Xml.Linq;
+
+namespace AFS.WebServices.Client.TrueChecks
 {
     /// <summary>
     /// The request body of a TrueChecks search.
     /// </summary>
-    public class TrueChecksSearch
+    public class TrueChecksSearch : ISerializeToRequestStream
     {
         public TrueChecksSearch()
         {
@@ -97,6 +105,35 @@
         /// </summary>
         public bool DoDepositChekSearch { get; set; }
 
+        public void SerializeToRequestStream(Stream stream, string contentType)
+        {
+            this.EnsureContentType(contentType, "application/x-www-form-urlencoded");
 
+
+            // reference: https://api.advancedfraudsolutions.com/Api/POST-TrueChecks-Search
+
+            using (var writer = new StreamWriter(stream))
+            {
+                var parameters = HttpUtility.ParseQueryString(string.Empty);
+                parameters["AccountNumber"] = AccountNumber;
+                parameters["BranchId"] = BranchId;
+                parameters["CheckAmount"] = CheckAmount.ToString(CultureInfo.InvariantCulture);
+                parameters["CheckNumber"] = CheckNumber;
+                parameters["DoDepositChekSearch"] = DoDepositChekSearch.ToString();
+                parameters["DoTrueChecksSearch"] = DoTrueChecksSearch.ToString();
+                parameters["DriversLicenseNumber"] = DriversLicenseNumber;
+                parameters["DriversLicenseState"] = DriversLicenseState;
+                parameters["FIID"] = FIID;
+                parameters["FirstName"] = FirstName;
+                parameters["IsBusinessOrPersonalCheck"] = IsBusinessOrPersonalCheck.ToString();
+                parameters["LastName"] = LastName;
+                parameters["Maker"] = Maker;
+                parameters["RefinedQueryId"] = RefinedQueryId.ToString();
+                parameters["RoutingNumber"] = RoutingNumber;
+                parameters["SSN"] = SSN;
+                parameters["TellerId"] = TellerId;
+                writer.Write(parameters.ToString());
+            }
+        }
     }
 }
