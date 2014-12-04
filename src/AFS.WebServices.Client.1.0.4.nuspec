@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
     <metadata>
         <id>AFS.WebServices.Client</id>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
         <authors>Advanced Fraud Solutions</authors>
         <owners>Advanced Fraud Solutions</owners>
         <projectUrl>https://api.advancedfraudsolutions.com</projectUrl>
@@ -25,7 +25,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="lib\net40\AFS.WebServices.Client.dll" target="lib\net40\AFS.WebServices.Client.dll" />
-        <file src="lib\net45\AFS.WebServices.Client.dll" target="lib\net45\AFS.WebServices.Client.dll" />
+        <file src="AFS.WebServices.Client.4.0\bin\Release\AFS.WebServices.Client.dll" target="lib\net40\AFS.WebServices.Client.dll" />
+        <file src="AFS.WebServices.Client\bin\Release\AFS.WebServices.Client.dll" target="lib\net45\AFS.WebServices.Client.dll" />
     </files>
 </package>
