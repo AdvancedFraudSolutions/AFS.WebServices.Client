@@ -23,7 +23,32 @@ namespace AFS.WebServices.Client
                 throw new BadRequestException(errors);
             }
 
-            message.EnsureSuccessStatusCode();
+            try
+            {
+                message.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException ex)
+            {
+                ex.Data[Constants.StatusCode] = message.StatusCode;
+                ex.Data[Constants.ReasonPhrase] = message.ReasonPhrase;
+                throw;
+            }
+        }
+
+        public static HttpStatusCode? GetStatusCode(this HttpRequestException ex)
+        {
+            if (ex.Data.Contains(Constants.StatusCode))
+                return (HttpStatusCode) ex.Data[Constants.StatusCode];
+
+            return null;
+        }
+
+        public static string GetReasonPhrase(this HttpRequestException ex)
+        {
+            if (ex.Data.Contains(Constants.ReasonPhrase))
+                return (string) ex.Data[Constants.ReasonPhrase];
+
+            return null;
         }
     }
 }
