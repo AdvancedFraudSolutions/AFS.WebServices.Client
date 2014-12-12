@@ -28,6 +28,11 @@ namespace AFS.WebServices.Client.TrueChecks
         public int QueryId { get; set; }
 
         /// <summary>
+        /// The overall recommendation ID number.
+        /// </summary>
+        public int OverallRecommendedActionId { get; set; }
+
+        /// <summary>
         /// The overall recommendation given by Advanced Fraud Solutions, considering all results.
         /// </summary>
         public string OverallRecommendedAction { get; set; }
@@ -109,6 +114,11 @@ namespace AFS.WebServices.Client.TrueChecks
             public int FraudTypeId { get; set; }
 
             /// <summary>
+            /// The recommendation ID number.
+            /// </summary>
+            public int RecommendedActionId { get; set; }
+
+            /// <summary>
             /// The recommendation given by the Advanced Fraud Solutions for this check alert.
             /// </summary>
             public string RecommendedAction { get; set; }
@@ -144,6 +154,8 @@ namespace AFS.WebServices.Client.TrueChecks
         {
             public string ErrorTitle { get; set; }
             public string ErrorDescription { get; set; }
+
+            public int RecommendedActionId { get; set; }
 
             /// <summary>
             /// Recommended action based on the ews response primary status code.
@@ -251,7 +263,7 @@ namespace AFS.WebServices.Client.TrueChecks
             IsEWSDepositChekServiceDown =
                 xml.Element(ns + "IsEWSDepositChekServiceDown").Value.Parse(Convert.ToBoolean);
             OverallRecommendedAction = xml.Element(ns + "OverallRecommendedAction").Value;
-
+            OverallRecommendedActionId = xml.Element(ns + "OverallRecommendedActionId").Value.Parse(Convert.ToInt32);
 
             CheckAlertResults = xml.Element(ns + "CheckAlertResults")
                 .Elements(ns + "TrueChecksSearchResponse.CheckAlertResult")
@@ -268,6 +280,7 @@ namespace AFS.WebServices.Client.TrueChecks
                     MakerAddress = el.Element(ns + "MakerAddress").Value,
                     MakerName = el.Element(ns + "MakerName").Value,
                     Notes = el.Element(ns + "Notes").Value,
+                    RecommendedActionId = el.Element(ns + "RecommendedActionId").Value.Parse(Convert.ToInt32),
                     RecommendedAction = el.Element(ns + "RecommendedAction").Value,
                     RecommendedActionWeight =
                         el.Element(ns + "RecommendedActionWeight").Value.Parse(Convert.ToInt32),
@@ -318,6 +331,7 @@ namespace AFS.WebServices.Client.TrueChecks
                         PrimaryStatusHitType = el.Element(ns + "PrimaryStatusHitType").Value,
                         PrimaryStatusShortTitle = el.Element(ns + "PrimaryStatusShortTitle").Value,
                         PrimaryStatusTitle = el.Element(ns + "PrimaryStatusTitle").Value,
+                        RecommendedActionId = el.Element(ns + "RecommendedActionId").Value.Parse(Convert.ToInt32),
                         RecommendedAction = el.Element(ns + "RecommendedAction").Value,
                         SecondaryStatusCode = el.Element(ns + "SecondaryStatusCode").Value,
                         SecondaryStatusDescription = el.Element(ns + "SecondaryStatusDescription").Value,
