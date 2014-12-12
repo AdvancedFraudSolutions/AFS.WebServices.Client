@@ -1,8 +1,8 @@
-﻿namespace AFS.WebServices.Client.TrueChecks
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace AFS.WebServices.Client.TrueChecks
+{
     /// <summary>
     /// The response body of a TrueChecks search.
     /// </summary>
@@ -24,6 +24,11 @@
         public int QueryId { get; set; }
 
         /// <summary>
+        /// The overall recommendation ID number.
+        /// </summary>
+        public int OverallRecommendedActionId { get; set; }
+
+        /// <summary>
         /// The overall recommendation given by Advanced Fraud Solutions, considering all results.
         /// </summary>
         public string OverallRecommendedAction { get; set; }
@@ -39,7 +44,7 @@
         public PersonResult[] PersonResults { get; set; }
 
         /// <summary>
-        /// Whether the EWS DepositChek service is operational or not. False if not operational, true otherwise.
+        /// Whether the EWS DepositChek service is operational or not. True if not operational, false otherwise.
         /// </summary>
         public bool IsEWSDepositChekServiceDown { get; set; }
 
@@ -105,6 +110,11 @@
             public int FraudTypeId { get; set; }
 
             /// <summary>
+            /// The recommendation ID number.
+            /// </summary>
+            public int RecommendedActionId { get; set; }
+
+            /// <summary>
             /// The recommendation given by the Advanced Fraud Solutions for this check alert.
             /// </summary>
             public string RecommendedAction { get; set; }
@@ -140,6 +150,11 @@
         {
             public string ErrorTitle { get; set; }
             public string ErrorDescription { get; set; }
+
+            /// <summary>
+            /// Recommended action ID number.
+            /// </summary>
+            public int RecommendedActionId { get; set; }
 
             /// <summary>
             /// Recommended action based on the ews response primary status code.

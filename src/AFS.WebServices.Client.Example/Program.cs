@@ -177,6 +177,7 @@ namespace AFS.WebServices.Client.Example
             PrintHeading("TrueChecks Search Results");
             Console.WriteLine("QueryId: {0}", results.QueryId);
             Console.WriteLine("OverallRecommendedAction: {0}", results.OverallRecommendedAction);
+            Console.WriteLine("OverallRecommendedActionId: {0}", results.OverallRecommendedActionId);
 
             // show the TrueChecks check alert results
             Console.WriteLine("CheckAlertResults: {0}", results.CheckAlertResults.Length);
@@ -187,6 +188,7 @@ namespace AFS.WebServices.Client.Example
             {
                 PrintIndented("FraudType: {0}", r.FraudType);
                 PrintIndented("RecommendedAction: {0}", r.RecommendedAction);
+                PrintIndented("RecommendedActionId: {0}", r.RecommendedActionId);
                 PrintIndented("Notes: {0}", r.Notes);
                 PrintIndented("CreatedDate: {0}", r.CreatedDate);
                 PrintIndented("UpdatedDate: {0}", r.UpdatedDate);
@@ -230,6 +232,7 @@ namespace AFS.WebServices.Client.Example
             {
                 var r = results.DepositChekResults;
                 PrintIndented("RecommendedAction: {0}", r.RecommendedAction);
+                PrintIndented("RecommendedActionId: {0}", r.RecommendedActionId);
 
                 PrintIndented("PrimaryStatusCode: {0}", r.PrimaryStatusCode);
                 PrintIndented("PrimaryStatusDescription: {0}", r.PrimaryStatusDescription);
