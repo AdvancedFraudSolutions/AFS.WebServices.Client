@@ -8,6 +8,7 @@
         Accepted = 1,
         Denied = 2,
         Held = 3,
-        RefinedSearch = 4
+        RefinedSearch = 4,
+        Ignored = 5
     }
 }
