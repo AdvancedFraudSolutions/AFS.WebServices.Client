@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AFS.WebServices.Client.TrueChecks
+﻿namespace AFS.WebServices.Client.TrueChecks
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// The response body of a TrueChecks search.
     /// </summary>
@@ -52,6 +52,11 @@ namespace AFS.WebServices.Client.TrueChecks
         /// The account status results given by EWS DepositChek.
         /// </summary>
         public DepositChekResult DepositChekResults { get; set; }
+
+        /// <summary>
+        /// The account status results given by Advanced Fraud Solutions.
+        /// </summary>
+        public AccountStatusResult AccountStatus { get; set; }
 
         /// <summary>
         /// A TrueChecks check alert result.
@@ -241,6 +246,62 @@ namespace AFS.WebServices.Client.TrueChecks
             /// A collection the types of activity perpetrated by the depositor and the number of occurrences on record.
             /// </summary>
             public Dictionary<string, int> ActivitySummary { get; set; }
+        }
+
+        /// <summary>
+        /// Contains details about the status of an account.
+        /// </summary>
+        public class AccountStatusResult
+        {
+            /// <summary>
+            /// The account status.
+            /// </summary>
+            public string AccountStatus { get; set; }
+
+            /// <summary>
+            /// How the account status was determined.
+            /// </summary>
+            public string AccountStatusSource { get; set; }
+
+            /// <summary>
+            /// The recommended action Id.
+            /// </summary>
+            public int RecommendedActionId { get; set; }
+
+            /// <summary>
+            /// The recommended action associated with this account status record.
+            /// </summary>
+            public string RecommendedAction { get; set; }
+
+            /// <summary>
+            /// The date that the account was opened.
+            /// </summary>
+            public DateTime? AccountOpenDate { get; set; }
+
+            /// <summary>
+            /// The date that the account was closed.
+            /// </summary>
+            public DateTime? AccountCloseDate { get; set; }
+
+            /// <summary>
+            /// The date that this account status record was created.
+            /// </summary>
+            public DateTimeOffset CreatedTimestamp { get; set; }
+
+            /// <summary>
+            /// The date that this account status record was last updated.
+            /// </summary>
+            public DateTimeOffset LastUpdatedTimestamp { get; set; }
+
+            /// <summary>
+            /// The routing number of the account.
+            /// </summary>
+            public string RoutingNumber { get; set; }
+
+            /// <summary>
+            /// The account number of the account.
+            /// </summary>
+            public string AccountNumber { get; set; }
         }
     }
 }

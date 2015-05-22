@@ -203,6 +203,26 @@ namespace AFS.WebServices.Client.Example
                 PrintHorizontalLine();
             }
 
+            // print AFS Account Status Results
+            if (results.AccountStatus != null)
+            {
+                Console.WriteLine("AFS Account Status Result:");
+
+                PrintIndented("RoutingNumber: {0}", results.AccountStatus.RoutingNumber);
+                PrintIndented("AccountNumber: {0}", results.AccountStatus.AccountNumber);
+                PrintIndented("AccountCloseDate: {0}", results.AccountStatus.AccountCloseDate);
+                PrintIndented("AccountOpenDate: {0}", results.AccountStatus.AccountOpenDate);
+
+                PrintIndented("AccountStatus: {0}", results.AccountStatus.AccountStatus);
+                PrintIndented("AccountStatusSource: {0}", results.AccountStatus.AccountStatusSource);
+                PrintIndented("RecommendedActionId: {0}", results.AccountStatus.RecommendedActionId);
+                PrintIndented("RecommendedAction: {0}", results.AccountStatus.RecommendedAction);
+                PrintIndented("CreatedTimestamp: {0}", results.AccountStatus.CreatedTimestamp);
+                PrintIndented("LastUpdatedTimestamp: {0}", results.AccountStatus.LastUpdatedTimestamp);
+            }
+
+     
+
             // print person results
             Console.WriteLine("PersonResults: {0}", results.PersonResults.Length);
             foreach (var r in results.PersonResults.OrderBy(x => x.NameMatchOnly).ThenByDescending(x => x.PersonUpdated)
@@ -223,7 +243,7 @@ namespace AFS.WebServices.Client.Example
             }
 
             // print ews results
-            Console.WriteLine("AccountStatusResults:");
+            Console.WriteLine("DepositChek Account Status Result:");
             if (results.IsEWSDepositChekServiceDown)
             {
                 PrintIndented("EWS DepositChek service is down.");
