@@ -34,7 +34,7 @@ namespace AFS.WebServices.Client
         }
 
         /// <param name="connectionString">A connection string containing the information needed to connect to the AFS web services.</param>
-        public AFSClient(string connectionString)
+        public static AFSClient CreateFromConnectionString(string connectionString)
         {
             if (connectionString == null) throw new ArgumentNullException("connectionString");
 
@@ -47,7 +47,8 @@ namespace AFS.WebServices.Client
             if (!csb.TryGetValue("url", out baseAddress))
                 baseAddress = Urls.DefaultBaseAddress;
 
-            _client = CreateHttpClient((string)baseAddress, (string)apiKey);
+            var httpClient = CreateHttpClient((string) baseAddress, (string) apiKey);
+            return new AFSClient(httpClient);
         }
 
         private static void BadConnectionString(Exception innerException = null)
@@ -70,52 +71,80 @@ namespace AFS.WebServices.Client
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<TrueChecksSearchResponse> TrueChecksSearchAsync(TrueChecksSearch query)
+        public Task<TrueChecksSearchResponse> TrueChecksSearchAsync(TrueChecksSearch query)
         {
             if (query == null) throw new ArgumentNullException("query");
 
-            using (var response = await _client.PostAsJsonAsync(Urls.TrueChecksSearch, query, CancellationToken))
+            var postTask = _client.PostAsJsonAsync(Urls.TrueChecksSearch, query, CancellationToken);
+
+            var readTask = postTask.ContinueWith(t =>
             {
-                await response.HandleBadRequest(CancellationToken);
+                using (var response = t.Result)
+                {
+                    t.Result.EnsureGoodResponse(CancellationToken);
+                    return TaskUtil.ReadAsAsync<TrueChecksSearchResponse>(response.Content, CancellationToken).Result;
+                }
 
-#if NET40
-                var results = await response.Content.ReadAsAsync<TrueChecksSearchResponse>();
-#else
-                var results = await response.Content.ReadAsAsync<TrueChecksSearchResponse>(CancellationToken);
-#endif
-                return results;
-            }
+            }, CancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
+
+            return readTask;
         }
 
-        public async Task<TrueChecksClientSettingsResponse> GetClientTrueChecksSettingsAsync()
+        public Task<TrueChecksClientSettingsResponse> GetClientTrueChecksSettingsAsync()
         {
-            using (var response = await _client.GetAsync(Urls.TrueChecksClientSettings, CancellationToken))
+            var getTask = _client.GetAsync(Urls.TrueChecksClientSettings, CancellationToken);
+
+            var readTask = getTask.ContinueWith(t =>
             {
-                await response.HandleBadRequest(CancellationToken);
-#if NET40
-                var results = await response.Content.ReadAsAsync<TrueChecksClientSettingsResponse>();
-#else
-                var results = await response.Content.ReadAsAsync<TrueChecksClientSettingsResponse>(CancellationToken);
-#endif
-                return results;
-            }
+                using (var response = t.Result)
+                {
+                    response.EnsureGoodResponse(CancellationToken);
+                    return TaskUtil.ReadAsAsync<TrueChecksClientSettingsResponse>(response.Content, CancellationToken)
+                        .Result;
+                }
+
+            }, CancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
+
+            return readTask;
         }
 
-        public async Task PostTrueChecksQueryAction(TrueChecksAction action)
+        public Task PostTrueChecksQueryAction(TrueChecksAction action)
         {
-            using (var response = await _client.PostAsJsonAsync(Urls.TrueChecksCheckAction, action, CancellationToken))
-                await response.HandleBadRequest(CancellationToken);
+            var postTask = _client.PostAsJsonAsync(Urls.TrueChecksCheckAction, action, CancellationToken);
+
+            var readTask = postTask.ContinueWith(t =>
+            {
+                using (var response = t.Result)
+                {
+                    response.EnsureGoodResponse(CancellationToken);
+                }
+
+            }, CancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
+
+            return readTask;
+
         }
 
-        public async Task<Image> GetTrueChecksImage(string imagePath)
+        public  Task<Image> GetTrueChecksImage(string imagePath)
         {
             var url = Urls.TrueChecksImages(imagePath);
-            using (var response = await _client.GetAsync(url, CancellationToken))
+            var getTask = _client.GetAsync(url, CancellationToken);
+
+
+            var readTask = getTask.ContinueWith(t =>
             {
-                await response.HandleBadRequest(CancellationToken);
-                using (var stream = await response.Content.ReadAsStreamAsync())
-                    return Image.FromStream(stream);
-            }
+                using (var response = t.Result)
+                {
+                    response.EnsureGoodResponse(CancellationToken);
+
+                    using (var stream = response.Content.ReadAsStreamAsync().Result)
+                        return Image.FromStream(stream);
+                }
+
+            }, CancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
+
+            return readTask;
+
         }
 
         public void Dispose()

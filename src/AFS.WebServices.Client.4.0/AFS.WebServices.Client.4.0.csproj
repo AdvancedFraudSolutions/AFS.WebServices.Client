@@ -88,6 +88,9 @@
     <Compile Include="..\AFS.WebServices.Client\Extensions.cs">
       <Link>Extensions.cs</Link>
     </Compile>
+    <Compile Include="..\AFS.WebServices.Client\TaskUtil.cs">
+      <Link>TaskUtil.cs</Link>
+    </Compile>
     <Compile Include="..\AFS.WebServices.Client\TrueChecks\BadRequestResponse.cs">
       <Link>TrueChecks\BadRequestResponse.cs</Link>
     </Compile>

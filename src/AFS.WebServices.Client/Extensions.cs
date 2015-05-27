@@ -1,25 +1,20 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 using AFS.WebServices.Client.TrueChecks;
 
 namespace AFS.WebServices.Client
 {
     public static class Extensions
     {
-        public static async Task HandleBadRequest(this HttpResponseMessage message, CancellationToken cancellationToken)
+        public static void EnsureGoodResponse(this HttpResponseMessage message, CancellationToken cancellationToken)
         {
             if (message.IsSuccessStatusCode)
                 return;
 
             if (message.StatusCode == HttpStatusCode.BadRequest)
             {
-#if NET40
-                var errors = await message.Content.ReadAsAsync<BadRequestResponse>();
-#else
-                var errors = await message.Content.ReadAsAsync<BadRequestResponse>(cancellationToken);
-#endif
+                var errors = TaskUtil.ReadAsAsync<BadRequestResponse>(message.Content, cancellationToken).Result;
                 throw new BadRequestException(errors);
             }
 
@@ -38,7 +33,7 @@ namespace AFS.WebServices.Client
         public static HttpStatusCode? GetStatusCode(this HttpRequestException ex)
         {
             if (ex.Data.Contains(Constants.StatusCode))
-                return (HttpStatusCode) ex.Data[Constants.StatusCode];
+                return (HttpStatusCode)ex.Data[Constants.StatusCode];
 
             return null;
         }
@@ -46,7 +41,7 @@ namespace AFS.WebServices.Client
         public static string GetReasonPhrase(this HttpRequestException ex)
         {
             if (ex.Data.Contains(Constants.ReasonPhrase))
-                return (string) ex.Data[Constants.ReasonPhrase];
+                return (string)ex.Data[Constants.ReasonPhrase];
 
             return null;
         }
