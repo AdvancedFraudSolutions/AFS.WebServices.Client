@@ -21,7 +21,7 @@ namespace AFS.WebServices.Client.Example
             // you can create the client with a connection string or with the url/api key
             // the connection string should look like:
             //      Url = https://api.advancedfraudsolutions.com; ApiKey = yourClientApiKeyGoesHere
-            using (var client = new AFSClient(connectionString))
+            using (var client = AFSClient.CreateFromConnectionString(connectionString))
             {
                 int? refinedQueryId = null;
                 do
@@ -254,6 +254,7 @@ namespace AFS.WebServices.Client.Example
                 PrintIndented("RecommendedAction: {0}", r.RecommendedAction);
                 PrintIndented("RecommendedActionId: {0}", r.RecommendedActionId);
 
+
                 PrintIndented("PrimaryStatusCode: {0}", r.PrimaryStatusCode);
                 PrintIndented("PrimaryStatusDescription: {0}", r.PrimaryStatusDescription);
                 PrintIndented("PrimaryStatusHitType: {0}", r.PrimaryStatusHitType);
@@ -275,10 +276,13 @@ namespace AFS.WebServices.Client.Example
                 PrintIndented("PreviousStatusHitType: {0}", r.PreviousStatusHitType);
                 PrintIndented("PreviousStatusTitle: {0}", r.PreviousStatusTitle);
 
+                PrintIndented("NumberOfReturns: {0}", r.NumberOfReturns);
                 PrintIndented("LastReturnReasonCode: {0}", r.LastReturnReasonCode);
                 PrintIndented("LastReturnReasonDescription: {0}", r.LastReturnReasonDescription);
                 PrintIndented("LastReturnReasonHitType: {0}", r.LastReturnReasonHitType);
                 PrintIndented("LastReturnReasonTitle: {0}", r.LastReturnReasonTitle);
+                PrintIndented("LastReturnDate: {0}", r.LastReturnDate);
+                PrintIndented("LastUpdate: {0}", r.LastUpdate);
 
                 PrintIndented("ErrorDescription: {0}", r.ErrorDescription);
                 PrintIndented("ErrorTitle: {0}", r.ErrorTitle);

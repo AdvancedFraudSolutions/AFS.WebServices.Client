@@ -186,6 +186,9 @@
             public string PreviousStatusTitle { get; set; }
             public string PreviousStatusDescription { get; set; }
             public string PreviousStatusHitType { get; set; }
+            public int? NumberOfReturns { get; set; }
+            public DateTime? LastReturnDate { get; set; }
+            public DateTime? LastUpdate { get; set; }
         }
 
         /// <summary>
