@@ -137,6 +137,11 @@
             public string Notes { get; set; }
 
             /// <summary>
+            /// Is alert public or private.
+            /// </summary>
+            public bool IsPublic { get; set; }
+
+            /// <summary>
             /// When the alert was created.
             /// </summary>
             public DateTimeOffset CreatedDate { get; set; }

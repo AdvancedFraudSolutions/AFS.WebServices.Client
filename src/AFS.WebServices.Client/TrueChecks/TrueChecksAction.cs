@@ -6,12 +6,12 @@
     public class TrueChecksAction
     {
         /// <summary>
-        /// The ID of the TrueChecks query for which this action references.
+        /// The ID of the TrueChecks query for which this action references. Required.
         /// </summary>
         public int QueryId { get; set; }
 
         /// <summary>
-        /// The action that the teller took on the check.
+        /// The action that the teller took on the check. Required.
         /// </summary>
         public QueryAction Action { get; set; }
     }
