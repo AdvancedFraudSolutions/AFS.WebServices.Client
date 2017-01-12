@@ -177,6 +177,7 @@ namespace AFS.WebServices.Client.Example
             PrintHeading("TrueChecks Search Results");
             Console.WriteLine("QueryId: {0}", results.QueryId);
             Console.WriteLine("OverallRecommendedAction: {0}", results.OverallRecommendedAction);
+            Console.WriteLine("OverallRecommendationReason: {0}", results.OverallRecommendationReason);
             Console.WriteLine("OverallRecommendedActionId: {0}", results.OverallRecommendedActionId);
 
             // show the TrueChecks check alert results

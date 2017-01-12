@@ -34,6 +34,11 @@
         public string OverallRecommendedAction { get; set; }
 
         /// <summary>
+        /// The reason contributing to the overall recommendation.
+        /// </summary>
+        public string OverallRecommendationReason { get; set; }
+
+        /// <summary>
         /// A collection of the TrueChecks check alert results.
         /// </summary>
         public CheckAlertResult[] CheckAlertResults { get; set; }
