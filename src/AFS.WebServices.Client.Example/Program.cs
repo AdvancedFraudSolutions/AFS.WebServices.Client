@@ -21,7 +21,7 @@ namespace AFS.WebServices.Client.Example
             // you can create the client with a connection string or with the url/api key
             // the connection string should look like:
             //      Url = https://api.advancedfraudsolutions.com; ApiKey = yourClientApiKeyGoesHere
-            using (var client = AFSClient.CreateFromConnectionString(connectionString))
+            using (IAFSClient client = AFSClient.CreateFromConnectionString(connectionString))
             {
                 int? refinedQueryId = null;
                 do
@@ -100,7 +100,7 @@ namespace AFS.WebServices.Client.Example
             return action;
         }
 
-        private static void SaveImages(AFSClient client, TrueChecksSearchResponse searchResults)
+        private static void SaveImages(IAFSClient client, TrueChecksSearchResponse searchResults)
         {
             PrintHeading("Saving Images");
             var imgDir = AppSettings.ImageDirectoryPath;

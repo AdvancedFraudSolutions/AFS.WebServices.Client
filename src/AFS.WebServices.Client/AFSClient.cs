@@ -12,7 +12,7 @@ namespace AFS.WebServices.Client
     /// <summary>
     /// Provides methods for interacting with the Advanced Fraud Solutions web service.
     /// </summary>
-    public class AFSClient : IDisposable
+    public class AFSClient : IAFSClient
     {
         private readonly HttpClient _client;
         public CancellationToken CancellationToken { get; set; }

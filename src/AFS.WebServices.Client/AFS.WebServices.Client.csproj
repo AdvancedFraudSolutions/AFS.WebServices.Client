@@ -51,6 +51,7 @@
     <Compile Include="BadRequestException.cs" />
     <Compile Include="AFSClient.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="IAFSClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskUtil.cs" />
     <Compile Include="TrueChecks\BadRequestResponse.cs" />

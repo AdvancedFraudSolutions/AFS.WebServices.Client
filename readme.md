@@ -13,7 +13,7 @@ This solution contains 3 projects:
 
 You can install the client library via Nuget. The package is not listed, so you must specify a version during installation.
 
- `PM> Install-Package AFS.WebServices.Client -Version 2.0.3`
+ `PM> Install-Package AFS.WebServices.Client -Version 2.0.4`
 
 
 ## Web Service Documentation
