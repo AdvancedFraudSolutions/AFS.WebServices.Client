@@ -55,6 +55,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskUtil.cs" />
     <Compile Include="TrueChecks\BadRequestResponse.cs" />
+    <Compile Include="TrueChecks\RoutingInfo.cs" />
+    <Compile Include="TrueChecks\TrueChecksRoutingLookupResponse.cs" />
     <Compile Include="TrueChecks\Urls.cs" />
     <Compile Include="TrueChecks\Constants.cs" />
     <Compile Include="TrueChecks\FieldMode.cs" />

@@ -17,11 +17,13 @@ namespace AFS.WebServices.Client
         private readonly HttpClient _client;
         public CancellationToken CancellationToken { get; set; }
 
+
         public AFSClient(HttpClient httpClient)
         {
             if (httpClient == null) throw new ArgumentNullException("httpClient");
             _client = httpClient;
         }
+
 
         /// <param name="baseAddress">The base URL of the web service.</param>
         /// <param name="apiKey">Your API key that is used to identify the integrator and customer.</param>
@@ -32,6 +34,7 @@ namespace AFS.WebServices.Client
 
             _client = CreateHttpClient(baseAddress, apiKey);
         }
+
 
         /// <param name="connectionString">A connection string containing the information needed to connect to the AFS web services.</param>
         public static AFSClient CreateFromConnectionString(string connectionString)
@@ -47,9 +50,10 @@ namespace AFS.WebServices.Client
             if (!csb.TryGetValue("url", out baseAddress))
                 baseAddress = Urls.DefaultBaseAddress;
 
-            var httpClient = CreateHttpClient((string) baseAddress, (string) apiKey);
+            var httpClient = CreateHttpClient((string)baseAddress, (string)apiKey);
             return new AFSClient(httpClient);
         }
+
 
         private static void BadConnectionString(Exception innerException = null)
         {
@@ -59,12 +63,14 @@ namespace AFS.WebServices.Client
                     Urls.DefaultBaseAddress), innerException);
         }
 
+
         private static HttpClient CreateHttpClient(string baseAddress, string apiKey)
         {
             var client = new HttpClient { BaseAddress = new Uri(baseAddress) };
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Constants.XApiKey, apiKey);
             return client;
         }
+
 
         /// <summary>
         /// Search 
@@ -90,6 +96,7 @@ namespace AFS.WebServices.Client
             return readTask;
         }
 
+
         public Task<TrueChecksClientSettingsResponse> GetClientTrueChecksSettingsAsync()
         {
             var getTask = _client.GetAsync(Urls.TrueChecksClientSettings, CancellationToken);
@@ -108,6 +115,7 @@ namespace AFS.WebServices.Client
             return readTask;
         }
 
+
         public Task PostTrueChecksQueryAction(TrueChecksAction action)
         {
             var postTask = _client.PostAsJsonAsync(Urls.TrueChecksCheckAction, action, CancellationToken);
@@ -122,14 +130,13 @@ namespace AFS.WebServices.Client
             }, CancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
 
             return readTask;
-
         }
 
-        public  Task<Image> GetTrueChecksImage(string imagePath)
+
+        public Task<Image> GetTrueChecksImage(string imagePath)
         {
             var url = Urls.TrueChecksImages(imagePath);
             var getTask = _client.GetAsync(url, CancellationToken);
-
 
             var readTask = getTask.ContinueWith(t =>
             {
@@ -144,8 +151,26 @@ namespace AFS.WebServices.Client
             }, CancellationToken, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
 
             return readTask;
-
         }
+
+
+        public Task<TrueChecksRoutingLookupResponse> TrueChecksRoutingLookup(string routingNumber)
+        {
+            var postTask = _client.PostAsJsonAsync(Urls.TrueChecksRoutingLookup, new { RoutingNumber = routingNumber }, CancellationToken);
+
+            var readTask = postTask.ContinueWith(t =>
+            {
+                using (var response = t.Result)
+                {
+                    response.EnsureGoodResponse(CancellationToken);
+                    return TaskUtil.ReadAsAsync<TrueChecksRoutingLookupResponse>(response.Content, CancellationToken)
+                            .Result;
+                }
+            });
+
+            return readTask;
+        }
+
 
         public void Dispose()
         {

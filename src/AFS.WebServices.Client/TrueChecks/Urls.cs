@@ -11,6 +11,7 @@
         internal const string TrueChecksSearch = TrueChecksPrefix + UrlFragments.TrueChecksSearch;
         internal const string TrueChecksClientSettings = TrueChecksPrefix + UrlFragments.TrueChecksClientSettings;
         internal const string TrueChecksCheckAction = TrueChecksPrefix + UrlFragments.TrueChecksCheckAction;
+        internal const string TrueChecksRoutingLookup = TrueChecksPrefix + UrlFragments.RoutingLookup;
 
         internal static string TrueChecksImages(string imagePath)
         {

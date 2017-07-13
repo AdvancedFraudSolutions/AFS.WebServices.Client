@@ -10,5 +10,6 @@ namespace AFS.WebServices.Client.TrueChecks
         public const string TrueChecksClientSettings = "ClientSettings";
         public const string TrueChecksCheckAction = "CheckAction";
         public const string TrueChecksImages = "Images";
+        public const string RoutingLookup = "RoutingLookup";
     }
 }
